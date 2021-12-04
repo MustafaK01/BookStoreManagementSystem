@@ -4,6 +4,14 @@
  */
 package com.bookstore.bookstoremanagement;
 
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import jdk.jfr.internal.Utils;
+import sun.security.pkcs11.Secmod;
+
 /**
  *
  * @author MustafaK01
@@ -15,6 +23,7 @@ public class Books extends javax.swing.JFrame {
      */
     public Books() {
         initComponents();
+        DisplayBooks();
     }
 
     /**
@@ -27,63 +36,64 @@ public class Books extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel9 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        bookNameTextField = new javax.swing.JTextField();
+        PriceTextField = new javax.swing.JTextField();
+        bookDeleteButton = new javax.swing.JButton();
+        bookAuthorTextField = new javax.swing.JTextField();
+        bookIdTextField = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField5 = new javax.swing.JTextField();
+        QuantityTextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        booksTable = new javax.swing.JTable();
+        bookEditButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        bookSaveButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        bookResetButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        exitBooksMenu = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        bookCategoryComboBox = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        showBooks = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(0, 0));
         setUndecorated(true);
 
-        jLabel9.setText("Password");
+        jLabel9.setText("Price");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        bookNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                bookNameTextFieldActionPerformed(evt);
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        PriceTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                PriceTextFieldActionPerformed(evt);
             }
         });
 
-        jButton6.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
-        jButton6.setText("Delete");
+        bookDeleteButton.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
+        bookDeleteButton.setText("Delete");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        bookAuthorTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                bookAuthorTextFieldActionPerformed(evt);
             }
         });
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        bookIdTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                bookIdTextFieldActionPerformed(evt);
             }
         });
 
@@ -124,13 +134,13 @@ public class Books extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        QuantityTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                QuantityTextFieldActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        booksTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -138,18 +148,23 @@ public class Books extends javax.swing.JFrame {
                 "ID", "Title", "Author", "Quantity", "Category", "Price"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(booksTable);
 
-        jButton1.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
-        jButton1.setText("Edit");
+        bookEditButton.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
+        bookEditButton.setText("Edit");
 
         jLabel5.setText("Author");
 
-        jButton2.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
-        jButton2.setText("Save");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bookSaveButton.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
+        bookSaveButton.setText("Save");
+        bookSaveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                bookSaveButtonMouseEntered(evt);
+            }
+        });
+        bookSaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bookSaveButtonActionPerformed(evt);
             }
         });
 
@@ -171,11 +186,11 @@ public class Books extends javax.swing.JFrame {
 
         jLabel7.setText("Quantity");
 
-        jButton4.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
-        jButton4.setText("Reset");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        bookResetButton.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
+        bookResetButton.setText("Reset");
+        bookResetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                bookResetButtonActionPerformed(evt);
             }
         });
 
@@ -184,8 +199,13 @@ public class Books extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
         jLabel1.setText("Book Store Management");
 
-        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel8.setText("X");
+        exitBooksMenu.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        exitBooksMenu.setText("X");
+        exitBooksMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitBooksMenuMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -195,21 +215,21 @@ public class Books extends javax.swing.JFrame {
                 .addGap(334, 334, 334)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8))
+                .addComponent(exitBooksMenu))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(exitBooksMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel4.setText("ID");
 
-        jComboBox1.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Programming", "Physics", "Chemistry", "Biologiy", "Sci-fi", "Detective", "Psychology", "Novels" }));
+        bookCategoryComboBox.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        bookCategoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Programming", "Physics", "Chemistry", "Biologiy", "Sci-fi", "Detective", "Psychology", "Novels" }));
 
         jLabel10.setText("Category");
 
@@ -218,6 +238,19 @@ public class Books extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        showBooks.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        showBooks.setText("Show Books");
+        showBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                showBooksMouseEntered(evt);
+            }
+        });
+        showBooks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showBooksActionPerformed(evt);
             }
         });
 
@@ -230,56 +263,57 @@ public class Books extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 802, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, Short.MAX_VALUE)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18))))
+                                .addComponent(jLabel4)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(171, 171, 171)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(165, 165, 165))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(47, 47, 47)
-                                        .addComponent(jLabel5)
-                                        .addGap(111, 111, 111)
-                                        .addComponent(jLabel7)
-                                        .addGap(103, 103, 103)
-                                        .addComponent(jLabel10)
-                                        .addGap(51, 51, 51)))))
+                                .addComponent(bookIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(bookNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(bookAuthorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(QuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addComponent(bookCategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(171, 171, 171)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(165, 165, 165))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel5)
+                                .addGap(111, 111, 111)
+                                .addComponent(jLabel7)
+                                .addGap(103, 103, 103)
+                                .addComponent(jLabel10)
+                                .addGap(51, 51, 51))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(248, 248, 248)
-                        .addComponent(jButton2)
+                        .addComponent(bookSaveButton)
                         .addGap(65, 65, 65)
-                        .addComponent(jButton1)
+                        .addComponent(bookEditButton)
                         .addGap(65, 65, 65)
-                        .addComponent(jButton6)
+                        .addComponent(bookDeleteButton)
                         .addGap(65, 65, 65)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(bookResetButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(showBooks)
+                        .addGap(21, 21, 21)
+                        .addComponent(jButton3))
+                    .addComponent(PriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -292,8 +326,8 @@ public class Books extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
                         .addComponent(jLabel6)
                         .addComponent(jLabel4)
                         .addComponent(jLabel9)
@@ -301,23 +335,25 @@ public class Books extends javax.swing.JFrame {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bookNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bookAuthorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(QuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bookIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bookCategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
-                            .addComponent(jButton6)
-                            .addComponent(jButton4))
+                            .addComponent(bookEditButton)
+                            .addComponent(bookSaveButton)
+                            .addComponent(bookDeleteButton)
+                            .addComponent(bookResetButton))
                         .addGap(18, 18, 18))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(10, 10, 10)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -326,38 +362,115 @@ public class Books extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    Connection connect=null;
+    Statement statement=null;
+    ResultSet resultSet=null;
+    private void DisplayBooks(){
+        try {
+            connect=DriverManager.getConnection("jdbc:mysql://localhost:3306/BookShopDB","root","");
+            statement=connect.createStatement();
+            resultSet=statement.executeQuery("SELECT * FROM Book WHERE book_id");
+            String columns[] = { "Id", "Title", "Author","Quantity","Category","Price" };
+            String data[][] = new String[100][6];
+            int i = 0;
+            while (resultSet.next()) {
+            int id = resultSet.getInt("book_id");
+            String title = resultSet.getString("title");
+            String author = resultSet.getString("author");
+            int quantity = resultSet.getInt("quantity");
+            String category = resultSet.getString("category");
+            int price = resultSet.getInt("price");
+            data[i][0] = id +"";
+            data[i][1] = title;
+            data[i][2] = author;
+            data[i][3] = quantity+"";
+            data[i][4] = category;
+            data[i][5] = price+"";
+            i++;
+        }
+    
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        booksTable.setModel(model);
+    
+    } catch(SQLException e) {
+      e.printStackTrace();
+    }
+    
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    }
+    private void bookNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_bookNameTextFieldActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void PriceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_PriceTextFieldActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void bookAuthorTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookAuthorTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_bookAuthorTextFieldActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void bookIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookIdTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_bookIdTextFieldActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void QuantityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuantityTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_QuantityTextFieldActionPerformed
+
+    private void bookSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSaveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bookSaveButtonActionPerformed
+
+    private void bookResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookResetButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bookResetButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void exitBooksMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitBooksMenuMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_exitBooksMenuMouseClicked
+
+    private void bookSaveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bookSaveButtonMouseEntered
+        if(bookIdTextField.getText().isEmpty()||bookNameTextField.getText().isEmpty()||bookAuthorTextField.getText().isEmpty()||bookCategoryComboBox.getSelectedIndex()==-1||QuantityTextField.getText().isEmpty()||PriceTextField.getText().isEmpty()){
+              JOptionPane.showMessageDialog(this,"Lütfen Alanları Doldurun");
+        }
+        else{
+               try{
+                //Class.forName("com.mysql.cj.jdbc.Driver"); 
+                connect=DriverManager.getConnection("jdbc:mysql://localhost:3306/BookShopDB","root","");
+                PreparedStatement addToTable=connect.prepareStatement("INSERT INTO Book Values(?,?,?,?,?,?)");
+                addToTable.setInt(1,Integer.valueOf(bookIdTextField.getText()));
+                addToTable.setString(2, bookNameTextField.getText());
+                addToTable.setString(3, bookAuthorTextField.getText());
+                addToTable.setString(4, bookCategoryComboBox.getSelectedItem().toString());
+                addToTable.setInt(5, Integer.valueOf(QuantityTextField.getText()));
+                addToTable.setInt(6, Integer.valueOf(PriceTextField.getText()));
+                int row = addToTable.executeUpdate();
+                JOptionPane.showMessageDialog(this,"Kitap Eklendi !!");
+                //connect.close();
+                //statement=connect.createStatement();
+                //resultSet=statement.executeQuery(string)
+                //DisplayBooks();
+               }
+            catch(Exception e){
+               e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_bookSaveButtonMouseEntered
+
+    private void showBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBooksActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_showBooksActionPerformed
+
+    private void showBooksMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showBooksMouseEntered
+        DisplayBooks();
+    }//GEN-LAST:event_showBooksMouseEntered
 
     /**
      * @param args the command line arguments
@@ -395,35 +508,33 @@ public class Books extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField PriceTextField;
+    private javax.swing.JTextField QuantityTextField;
+    private javax.swing.JTextField bookAuthorTextField;
+    private javax.swing.JComboBox<String> bookCategoryComboBox;
+    private javax.swing.JButton bookDeleteButton;
+    private javax.swing.JButton bookEditButton;
+    private javax.swing.JTextField bookIdTextField;
+    private javax.swing.JTextField bookNameTextField;
+    private javax.swing.JButton bookResetButton;
+    private javax.swing.JButton bookSaveButton;
+    private javax.swing.JTable booksTable;
+    private javax.swing.JLabel exitBooksMenu;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton showBooks;
     // End of variables declaration//GEN-END:variables
 }
