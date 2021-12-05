@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 package com.bookstore.bookstoremanagement;
 
 /**
@@ -97,7 +92,7 @@ public class Splash extends javax.swing.JFrame {
        splash.setVisible(true);
         try {
             for (int i = 0; i < 100; i++) {
-                Thread.sleep(80);
+                Thread.sleep(50);
                 splash.splashScreenProgressBar.setValue(i);
                 splash.progressOfProgressBar.setText(Integer.toString(i)+" %");
             }
